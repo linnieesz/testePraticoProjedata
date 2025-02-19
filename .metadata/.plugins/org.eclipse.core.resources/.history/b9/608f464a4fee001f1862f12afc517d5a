@@ -1,0 +1,113 @@
+package br.com.etads;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		OpcoesFuncionario opcoesFuncionario = new OpcoesFuncionario();
+
+		Funcionario f1 = new Funcionario("Ana", LocalDate.of(1990, 5, 12), 5000.00, "Engenheira");
+		Funcionario f2 = new Funcionario("Carlos", LocalDate.of(1985, 8, 22), 6000.00, "Gerente");
+		Funcionario f3 = new Funcionario("Beatriz", LocalDate.of(1995, 2, 18), 5200.00, "Engenheira");
+		Funcionario f4 = new Funcionario("Diego", LocalDate.of(1988, 7, 5), 6100.00, "Gerente");
+		Funcionario f5 = new Funcionario("Eduardo", LocalDate.of(1992, 10, 30), 4800.00, "Analista");
+
+		opcoesFuncionario.adicionarFuncionario(f1);
+		opcoesFuncionario.adicionarFuncionario(f2);
+		opcoesFuncionario.adicionarFuncionario(f3);
+		opcoesFuncionario.adicionarFuncionario(f4);
+		opcoesFuncionario.adicionarFuncionario(f5);
+
+		Map<String, List<Funcionario>> agrupados = opcoesFuncionario.agruparFuncionariosPorFuncao();
+
+		for (Map.Entry<String, List<Funcionario>> entry : agrupados.entrySet()) {
+			System.out.println("\nFunção: " + entry.getKey());
+			for (Funcionario f : entry.getValue()) {
+				f.exibirInformacoes();
+			}
+		}
+
+		System.out.print("Gostaria de realizar alguma atualização?\n1. Sim.\n2. Não.\nInsira o número: ");
+		String system = scanner.nextLine();
+
+		while (system.equals("1")) {
+			System.out.println(
+					"O que deseja fazer?\n1. Adicionar funcionário.\n2. Remover funcionário.\n3. Visualizar tabela de funcionários agrupados por função.\n4. Mostrar funcionários que nasceram os meses 10 e 12.\n5. Mostrar o funcionário mais velho.\n6. Mostrar o total entre os salários dos funcionários.\n7. Mostrar a quantidade de salários mínimos de cada funcionário.\n8. Finalizar.");
+			String systemOpt = scanner.nextLine();
+
+			if (systemOpt.equals("1")) {
+				System.out.println("Insira o novo funcionário: ");
+
+				System.out.println("Nome: ");
+				String nameFunc = scanner.nextLine();
+
+				System.out.println("Data de nascimento (dd/MM/yyyy): ");
+				String dataFuncString = scanner.nextLine();
+
+				LocalDate dataFunc = LocalDate.parse(dataFuncString, formatter);
+
+				System.out.println("Salário: ");
+				double salaryFunc = scanner.nextDouble();
+				scanner.nextLine();
+
+				System.out.println("Função: ");
+				String funcaoFunc = scanner.nextLine();
+
+				opcoesFuncionario.adicionarFuncionario(new Funcionario(nameFunc, dataFunc, salaryFunc, funcaoFunc));
+				
+
+			} else if (systemOpt.equals("2")) {
+				System.out.println("Insira o índice do funcionário a ser removido.");
+
+			} else if (systemOpt.equals("3")) {
+				System.out.println("Lista de Funcionários:");
+				for (Funcionario f : opcoesFuncionario.getFuncionarios()) {
+					System.out.println(f);
+				}
+				
+				System.out.println("Digite qualquer coisa para continuar.");
+				String test = scanner.nextLine();
+				
+				if (test.equals(' ')) {
+					continue;
+				}
+				
+			} else if (systemOpt.equals("4")) {
+				System.out.println(":");
+				for (Funcionario f : opcoesFuncionario.getFuncionarios()) {
+					System.out.println(f);
+				}
+			} else if (systemOpt.equals("5")) {
+				System.out.println(":");
+				for (Funcionario f : opcoesFuncionario.getFuncionarios()) {
+					System.out.println(f);
+				}
+			} else if (systemOpt.equals("6")) {
+				System.out.println(":");
+				for (Funcionario f : opcoesFuncionario.getFuncionarios()) {
+					System.out.println(f);
+				}
+			} else if (systemOpt.equals("7")) {
+				System.out.println(":");
+				for (Funcionario f : opcoesFuncionario.getFuncionarios()) {
+					System.out.println(f);
+				}
+			} else if (systemOpt.equals("8")) {
+				System.out.println("Até!");
+				break;
+			} else {
+				System.out.println("Opção não compreendida. Use o número, por favor.");
+			}
+		}
+
+		System.out.println("Finalizado.");
+
+	}
+}

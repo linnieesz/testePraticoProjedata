@@ -1,0 +1,91 @@
+package br.com.etads;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class OpcoesFuncionario {
+	private List<Funcionario> funcionarios = new ArrayList<>();
+
+	public List<Funcionario> getFuncionarios() {
+		return Collections.unmodifiableList(funcionarios);
+	}
+
+	public void adicionarFuncionario(Funcionario funcionario) {
+		funcionarios.add(funcionario);
+	}
+
+	public void removerFuncionarioPorNome(String nome) {
+		List<Funcionario> funcionariosComNome = new ArrayList<>();
+		for (Funcionario f : funcionarios) {
+			if (f.getNome().equalsIgnoreCase(nome)) {
+				funcionariosComNome.add(f);
+			}
+		}
+
+		if (funcionariosComNome.isEmpty()) {
+			System.out.println("Nenhum funcionário encontrado com o nome: " + nome);
+			return;
+		}
+
+		if (funcionariosComNome.size() > 1) {
+			System.out.println("Múltiplos funcionários encontrados com o nome: " + nome);
+			for (int i = 0; i < funcionariosComNome.size(); i++) {
+				System.out.println((i + 1) + ". " + funcionariosComNome.get(i));
+			}
+			System.out.print("Escolha o número do funcionário que deseja remover: ");
+			Scanner scanner = new Scanner(System.in);
+			int escolha = scanner.nextInt();
+			scanner.nextLine();
+			if (escolha > 0 && escolha <= funcionariosComNome.size()) {
+				funcionarios.remove(funcionariosComNome.get(escolha - 1));
+				System.out.println("Funcionário removido com sucesso!");
+			} else {
+				System.out.println("Opção inválida!");
+			}
+		} else {
+			funcionarios.remove(funcionariosComNome.get(0));
+			System.out.println("Funcionário removido com sucesso!");
+		}
+	}
+
+	public Map<String, List<Funcionario>> agruparFuncionariosPorFuncao() {
+		Map<String, List<Funcionario>> mapaFuncionarios = new HashMap<>();
+
+		for (Funcionario f : funcionarios) {
+			String funcaoCapitalizada = capitalizeFirstLetter(f.getFuncao());
+			mapaFuncionarios.computeIfAbsent(funcaoCapitalizada, k -> new ArrayList<>()).add(f);
+		}
+
+		return mapaFuncionarios;
+	}
+
+	public void aplicarAumentoGeral(double porcentagem) {
+		if (porcentagem < 0) {
+			System.out.println("Porcentagem inválida. Não pode ser negativa.");
+			return;
+		}
+		for (Funcionario f : funcionarios) {
+			f.aplicarAumento(porcentagem);
+		}
+	}
+
+	private String capitalizeFirstLetter(String text) {
+		if (text == null || text.isEmpty()) {
+			return text;
+		}
+		String[] words = text.split(" ");
+		StringBuilder capitalizedText = new StringBuilder();
+
+		for (String word : words) {
+			if (!word.isEmpty()) {
+				capitalizedText.append(word.substring(0, 1).toUpperCase()).append(word.substring(1).toLowerCase())
+						.append(" ");
+			}
+		}
+		return capitalizedText.toString().trim();
+	}
+}

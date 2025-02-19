@@ -1,0 +1,42 @@
+package br.com.etads;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+public class OpcoesFuncionario {
+	private List<Funcionario> funcionarios = new ArrayList<>();
+	
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+	public void adicionarFuncionario(Funcionario funcionario) {
+		funcionarios.add(funcionario);
+	}
+
+	public void removerFuncionario(int index) {
+		if (index >= 0 && index < funcionarios.size()) {
+			funcionarios.remove(index);
+			System.out.println("Funcionário removido com sucesso!");
+		} else {
+			System.out.println("Índice inválido!");
+		}
+	}	
+	
+	public Map<String, List<Funcionario>> agruparFuncionariosPorFuncao() {
+		Map<String, List<Funcionario>> mapaFuncionarios = new HashMap<String, List<Funcionario>>();
+		
+		for (Funcionario f : funcionarios) {
+			String funcao = f.getFuncao();
+			
+			mapaFuncionarios.putIfAbsent(funcao, new ArrayList<>());
+			
+			mapaFuncionarios.get(funcao).add(f);
+		}
+		
+		return mapaFuncionarios;
+	}
+}
